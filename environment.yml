@@ -6,4 +6,4 @@ dependencies:
     - pytables
     - openpyxl
     - xlrd
-name: world_bank_data
+
