@@ -1,5 +1,5 @@
 numpy
 matplotlib
-wbdata
+world_bank_data
 pandas
 csv
