@@ -1,0 +1,43 @@
+diff --git a/doc/source/conf.py b/doc/source/conf.py
+index 3ebc5d8b6..479ad9ae7 100644
+--- a/doc/source/conf.py
++++ b/doc/source/conf.py
+@@ -55,8 +55,6 @@ extensions = [
+     "sphinx.ext.extlinks",
+     "sphinx.ext.todo",
+     "numpydoc",  # handle NumPy documentation formatted docstrings
+-    "IPython.sphinxext.ipython_directive",
+-    "IPython.sphinxext.ipython_console_highlighting",
+     "matplotlib.sphinxext.plot_directive",
+     "sphinx.ext.intersphinx",
+     "sphinx.ext.coverage",
+@@ -64,9 +62,29 @@ extensions = [
+     "sphinx.ext.ifconfig",
+     "sphinx.ext.linkcode",
+     "nbsphinx",
++    "sphinxcontrib.jupyter",
+     "contributors",  # custom pandas extension
+ ]
+ 
++jupyter_conversion_mode = "all"
++
++# Write notebook creation metadata to the top of the notebook
++jupyter_write_metadata = False
++jupyter_default_lang = "python3"
++# Add Ipython as Synonym for tests
++jupyter_lang_synonyms = ["python"]
++
++jupyter_kernels = {
++    "python3": {
++        "kernelspec": {
++            "display_name": "Python",
++            "language": "python3",
++            "name": "python3"
++        },
++        "file_extension": ".py",
++    },
++}
++
+ exclude_patterns = ["**.ipynb_checkpoints"]
+ try:
+     import nbconvert

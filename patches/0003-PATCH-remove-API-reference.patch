@@ -1,0 +1,4304 @@
+From 7764515f4ebb4efa1d68e3509b68b9931dce86d8 Mon Sep 17 00:00:00 2001
+From: Tom Augspurger <tom.w.augspurger@gmail.com>
+Date: Wed, 31 Jul 2019 12:00:00 -0500
+Subject: [PATCH 3/3] PATCH: remove API reference
+
+---
+ doc/source/reference/arrays.rst               |  474 ------
+ doc/source/reference/extensions.rst           |   61 -
+ doc/source/reference/frame.rst                |  370 -----
+ doc/source/reference/general_functions.rst    |   87 --
+ .../reference/general_utility_functions.rst   |  109 --
+ doc/source/reference/groupby.rst              |  137 --
+ doc/source/reference/index.rst                |   74 -
+ doc/source/reference/indexing.rst             |  499 ------
+ doc/source/reference/io.rst                   |  140 --
+ doc/source/reference/offset_frequency.rst     | 1387 -----------------
+ doc/source/reference/panel.rst                |   10 -
+ doc/source/reference/plotting.rst             |   22 -
+ doc/source/reference/resampling.rst           |   66 -
+ doc/source/reference/series.rst               |  593 -------
+ doc/source/reference/style.rst                |   66 -
+ doc/source/reference/window.rst               |   69 -
+ 16 files changed, 4164 deletions(-)
+ delete mode 100644 doc/source/reference/arrays.rst
+ delete mode 100644 doc/source/reference/extensions.rst
+ delete mode 100644 doc/source/reference/frame.rst
+ delete mode 100644 doc/source/reference/general_functions.rst
+ delete mode 100644 doc/source/reference/general_utility_functions.rst
+ delete mode 100644 doc/source/reference/groupby.rst
+ delete mode 100644 doc/source/reference/index.rst
+ delete mode 100644 doc/source/reference/indexing.rst
+ delete mode 100644 doc/source/reference/io.rst
+ delete mode 100644 doc/source/reference/offset_frequency.rst
+ delete mode 100644 doc/source/reference/panel.rst
+ delete mode 100644 doc/source/reference/plotting.rst
+ delete mode 100644 doc/source/reference/resampling.rst
+ delete mode 100644 doc/source/reference/series.rst
+ delete mode 100644 doc/source/reference/style.rst
+ delete mode 100644 doc/source/reference/window.rst
+
+diff --git a/doc/source/reference/arrays.rst b/doc/source/reference/arrays.rst
+deleted file mode 100644
+index 7f464bf95..000000000
+--- a/doc/source/reference/arrays.rst
++++ /dev/null
+@@ -1,474 +0,0 @@
+-{{ header }}
+-
+-.. _api.arrays:
+-
+-=============
+-Pandas arrays
+-=============
+-
+-.. currentmodule:: pandas
+-
+-For most data types, pandas uses NumPy arrays as the concrete
+-objects contained with a :class:`Index`, :class:`Series`, or
+-:class:`DataFrame`.
+-
+-For some data types, pandas extends NumPy's type system.
+-
+-=================== ========================= ================== =============================
+-Kind of Data        Pandas Data Type          Scalar             Array
+-=================== ========================= ================== =============================
+-TZ-aware datetime   :class:`DatetimeTZDtype`  :class:`Timestamp` :ref:`api.arrays.datetime`
+-Timedeltas          (none)                    :class:`Timedelta` :ref:`api.arrays.timedelta`
+-Period (time spans) :class:`PeriodDtype`      :class:`Period`    :ref:`api.arrays.period`
+-Intervals           :class:`IntervalDtype`    :class:`Interval`  :ref:`api.arrays.interval`
+-Nullable Integer    :class:`Int64Dtype`, ...  (none)             :ref:`api.arrays.integer_na`
+-Categorical         :class:`CategoricalDtype` (none)             :ref:`api.arrays.categorical`
+-Sparse              :class:`SparseDtype`      (none)             :ref:`api.arrays.sparse`
+-=================== ========================= ================== =============================
+-
+-Pandas and third-party libraries can extend NumPy's type system (see :ref:`extending.extension-types`).
+-The top-level :meth:`array` method can be used to create a new array, which may be
+-stored in a :class:`Series`, :class:`Index`, or as a column in a :class:`DataFrame`.
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   array
+-
+-.. _api.arrays.datetime:
+-
+-Datetime data
+--------------
+-
+-NumPy cannot natively represent timezone-aware datetimes. Pandas supports this
+-with the :class:`arrays.DatetimeArray` extension array, which can hold timezone-naive
+-or timezone-aware values.
+-
+-:class:`Timestamp`, a subclass of :class:`datetime.datetime`, is pandas'
+-scalar type for timezone-naive or timezone-aware datetime data.
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   Timestamp
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Timestamp.asm8
+-   Timestamp.day
+-   Timestamp.dayofweek
+-   Timestamp.dayofyear
+-   Timestamp.days_in_month
+-   Timestamp.daysinmonth
+-   Timestamp.fold
+-   Timestamp.hour
+-   Timestamp.is_leap_year
+-   Timestamp.is_month_end
+-   Timestamp.is_month_start
+-   Timestamp.is_quarter_end
+-   Timestamp.is_quarter_start
+-   Timestamp.is_year_end
+-   Timestamp.is_year_start
+-   Timestamp.max
+-   Timestamp.microsecond
+-   Timestamp.min
+-   Timestamp.minute
+-   Timestamp.month
+-   Timestamp.nanosecond
+-   Timestamp.quarter
+-   Timestamp.resolution
+-   Timestamp.second
+-   Timestamp.tz
+-   Timestamp.tzinfo
+-   Timestamp.value
+-   Timestamp.week
+-   Timestamp.weekofyear
+-   Timestamp.year
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Timestamp.astimezone
+-   Timestamp.ceil
+-   Timestamp.combine
+-   Timestamp.ctime
+-   Timestamp.date
+-   Timestamp.day_name
+-   Timestamp.dst
+-   Timestamp.floor
+-   Timestamp.freq
+-   Timestamp.freqstr
+-   Timestamp.fromordinal
+-   Timestamp.fromtimestamp
+-   Timestamp.isocalendar
+-   Timestamp.isoformat
+-   Timestamp.isoweekday
+-   Timestamp.month_name
+-   Timestamp.normalize
+-   Timestamp.now
+-   Timestamp.replace
+-   Timestamp.round
+-   Timestamp.strftime
+-   Timestamp.strptime
+-   Timestamp.time
+-   Timestamp.timestamp
+-   Timestamp.timetuple
+-   Timestamp.timetz
+-   Timestamp.to_datetime64
+-   Timestamp.to_numpy
+-   Timestamp.to_julian_date
+-   Timestamp.to_period
+-   Timestamp.to_pydatetime
+-   Timestamp.today
+-   Timestamp.toordinal
+-   Timestamp.tz_convert
+-   Timestamp.tz_localize
+-   Timestamp.tzname
+-   Timestamp.utcfromtimestamp
+-   Timestamp.utcnow
+-   Timestamp.utcoffset
+-   Timestamp.utctimetuple
+-   Timestamp.weekday
+-
+-A collection of timestamps may be stored in a :class:`arrays.DatetimeArray`.
+-For timezone-aware data, the ``.dtype`` of a ``DatetimeArray`` is a
+-:class:`DatetimeTZDtype`. For timezone-naive data, ``np.dtype("datetime64[ns]")``
+-is used.
+-
+-If the data are tz-aware, then every value in the array must have the same timezone.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   arrays.DatetimeArray
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   DatetimeTZDtype
+-
+-.. _api.arrays.timedelta:
+-
+-Timedelta data
+---------------
+-
+-NumPy can natively represent timedeltas. Pandas provides :class:`Timedelta`
+-for symmetry with :class:`Timestamp`.
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   Timedelta
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Timedelta.asm8
+-   Timedelta.components
+-   Timedelta.days
+-   Timedelta.delta
+-   Timedelta.freq
+-   Timedelta.is_populated
+-   Timedelta.max
+-   Timedelta.microseconds
+-   Timedelta.min
+-   Timedelta.nanoseconds
+-   Timedelta.resolution
+-   Timedelta.seconds
+-   Timedelta.value
+-   Timedelta.view
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Timedelta.ceil
+-   Timedelta.floor
+-   Timedelta.isoformat
+-   Timedelta.round
+-   Timedelta.to_pytimedelta
+-   Timedelta.to_timedelta64
+-   Timedelta.to_numpy
+-   Timedelta.total_seconds
+-
+-A collection of timedeltas may be stored in a :class:`TimedeltaArray`.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   arrays.TimedeltaArray
+-
+-.. _api.arrays.period:
+-
+-Timespan data
+--------------
+-
+-Pandas represents spans of times as :class:`Period` objects.
+-
+-Period
+-------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Period
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Period.day
+-   Period.dayofweek
+-   Period.dayofyear
+-   Period.days_in_month
+-   Period.daysinmonth
+-   Period.end_time
+-   Period.freq
+-   Period.freqstr
+-   Period.hour
+-   Period.is_leap_year
+-   Period.minute
+-   Period.month
+-   Period.ordinal
+-   Period.quarter
+-   Period.qyear
+-   Period.second
+-   Period.start_time
+-   Period.week
+-   Period.weekday
+-   Period.weekofyear
+-   Period.year
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Period.asfreq
+-   Period.now
+-   Period.strftime
+-   Period.to_timestamp
+-
+-A collection of timedeltas may be stored in a :class:`arrays.PeriodArray`.
+-Every period in a ``PeriodArray`` must have the same ``freq``.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   arrays.PeriodArray
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   PeriodDtype
+-
+-.. _api.arrays.interval:
+-
+-Interval data
+--------------
+-
+-Arbitrary intervals can be represented as :class:`Interval` objects.
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-    Interval
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Interval.closed
+-   Interval.closed_left
+-   Interval.closed_right
+-   Interval.is_empty
+-   Interval.left
+-   Interval.length
+-   Interval.mid
+-   Interval.open_left
+-   Interval.open_right
+-   Interval.overlaps
+-   Interval.right
+-
+-A collection of intervals may be stored in an :class:`arrays.IntervalArray`.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   arrays.IntervalArray
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   IntervalDtype
+-
+-
+-.. Those attributes and methods are included in the API because the docstrings
+-.. of IntervalIndex and IntervalArray are shared. Including it here to make
+-.. sure a docstring page is built for them to avoid warnings
+-
+-..
+-    .. autosummary::
+-      :toctree: api/
+-
+-      arrays.IntervalArray.left
+-      arrays.IntervalArray.right
+-      arrays.IntervalArray.closed
+-      arrays.IntervalArray.mid
+-      arrays.IntervalArray.length
+-      arrays.IntervalArray.is_empty
+-      arrays.IntervalArray.is_non_overlapping_monotonic
+-      arrays.IntervalArray.from_arrays
+-      arrays.IntervalArray.from_tuples
+-      arrays.IntervalArray.from_breaks
+-      arrays.IntervalArray.contains
+-      arrays.IntervalArray.overlaps
+-      arrays.IntervalArray.set_closed
+-      arrays.IntervalArray.to_tuples
+-
+-
+-.. _api.arrays.integer_na:
+-
+-Nullable integer
+-----------------
+-
+-:class:`numpy.ndarray` cannot natively represent integer-data with missing values.
+-Pandas provides this through :class:`arrays.IntegerArray`.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   arrays.IntegerArray
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   Int8Dtype
+-   Int16Dtype
+-   Int32Dtype
+-   Int64Dtype
+-   UInt8Dtype
+-   UInt16Dtype
+-   UInt32Dtype
+-   UInt64Dtype
+-
+-.. _api.arrays.categorical:
+-
+-Categorical data
+-----------------
+-
+-Pandas defines a custom data type for representing data that can take only a
+-limited, fixed set of values. The dtype of a ``Categorical`` can be described by
+-a :class:`pandas.api.types.CategoricalDtype`.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   CategoricalDtype
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   CategoricalDtype.categories
+-   CategoricalDtype.ordered
+-
+-Categorical data can be stored in a :class:`pandas.Categorical`
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   Categorical
+-
+-The alternative :meth:`Categorical.from_codes` constructor can be used when you
+-have the categories and integer codes already:
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   Categorical.from_codes
+-
+-The dtype information is available on the ``Categorical``
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   Categorical.dtype
+-   Categorical.categories
+-   Categorical.ordered
+-   Categorical.codes
+-
+-``np.asarray(categorical)`` works by implementing the array interface. Be aware, that this converts
+-the Categorical back to a NumPy array, so categories and order information is not preserved!
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   Categorical.__array__
+-
+-A ``Categorical`` can be stored in a ``Series`` or ``DataFrame``.
+-To create a Series of dtype ``category``, use ``cat = s.astype(dtype)`` or
+-``Series(..., dtype=dtype)`` where ``dtype`` is either
+-
+-* the string ``'category'``
+-* an instance of :class:`~pandas.api.types.CategoricalDtype`.
+-
+-If the Series is of dtype ``CategoricalDtype``, ``Series.cat`` can be used to change the categorical
+-data. See :ref:`api.series.cat` for more.
+-
+-.. _api.arrays.sparse:
+-
+-Sparse data
+------------
+-
+-Data where a single value is repeated many times (e.g. ``0`` or ``NaN``) may
+-be stored efficiently as a :class:`SparseArray`.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   SparseArray
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   SparseDtype
+-
+-The ``Series.sparse`` accessor may be used to access sparse-specific attributes
+-and methods if the :class:`Series` contains sparse values. See
+-:ref:`api.series.sparse` for more.
+-
+-
+-
+-.. Dtype attributes which are manually listed in their docstrings: including
+-.. it here to make sure a docstring page is built for them
+-
+-..
+-    .. autosummary::
+-      :toctree: api/
+-
+-      DatetimeTZDtype.unit
+-      DatetimeTZDtype.tz
+-      PeriodDtype.freq
+-      IntervalDtype.subtype
+\ No newline at end of file
+diff --git a/doc/source/reference/extensions.rst b/doc/source/reference/extensions.rst
+deleted file mode 100644
+index 407aab4bb..000000000
+--- a/doc/source/reference/extensions.rst
++++ /dev/null
+@@ -1,61 +0,0 @@
+-{{ header }}
+-
+-.. _api.extensions:
+-
+-==========
+-Extensions
+-==========
+-.. currentmodule:: pandas
+-
+-These are primarily intended for library authors looking to extend pandas
+-objects.
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   api.extensions.register_extension_dtype
+-   api.extensions.register_dataframe_accessor
+-   api.extensions.register_series_accessor
+-   api.extensions.register_index_accessor
+-   api.extensions.ExtensionDtype
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   api.extensions.ExtensionArray
+-   arrays.PandasArray
+-
+-.. We need this autosummary so that methods and attributes are generated.
+-.. Separate block, since they aren't classes.
+-
+-   .. autosummary::
+-      :toctree: api/
+-
+-      api.extensions.ExtensionArray._concat_same_type
+-      api.extensions.ExtensionArray._formatter
+-      api.extensions.ExtensionArray._formatting_values
+-      api.extensions.ExtensionArray._from_factorized
+-      api.extensions.ExtensionArray._from_sequence
+-      api.extensions.ExtensionArray._from_sequence_of_strings
+-      api.extensions.ExtensionArray._ndarray_values
+-      api.extensions.ExtensionArray._reduce
+-      api.extensions.ExtensionArray._values_for_argsort
+-      api.extensions.ExtensionArray._values_for_factorize
+-      api.extensions.ExtensionArray.argsort
+-      api.extensions.ExtensionArray.astype
+-      api.extensions.ExtensionArray.copy
+-      api.extensions.ExtensionArray.dropna
+-      api.extensions.ExtensionArray.factorize
+-      api.extensions.ExtensionArray.fillna
+-      api.extensions.ExtensionArray.isna
+-      api.extensions.ExtensionArray.ravel
+-      api.extensions.ExtensionArray.repeat
+-      api.extensions.ExtensionArray.searchsorted
+-      api.extensions.ExtensionArray.shift
+-      api.extensions.ExtensionArray.take
+-      api.extensions.ExtensionArray.unique
+-      api.extensions.ExtensionArray.dtype
+-      api.extensions.ExtensionArray.nbytes
+-      api.extensions.ExtensionArray.ndim
+-      api.extensions.ExtensionArray.shape
+diff --git a/doc/source/reference/frame.rst b/doc/source/reference/frame.rst
+deleted file mode 100644
+index b1c6172fb..000000000
+--- a/doc/source/reference/frame.rst
++++ /dev/null
+@@ -1,370 +0,0 @@
+-{{ header }}
+-
+-.. _api.dataframe:
+-
+-=========
+-DataFrame
+-=========
+-.. currentmodule:: pandas
+-
+-Constructor
+-~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame
+-
+-Attributes and underlying data
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-**Axes**
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.index
+-   DataFrame.columns
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.dtypes
+-   DataFrame.ftypes
+-   DataFrame.get_dtype_counts
+-   DataFrame.get_ftype_counts
+-   DataFrame.select_dtypes
+-   DataFrame.values
+-   DataFrame.get_values
+-   DataFrame.axes
+-   DataFrame.ndim
+-   DataFrame.size
+-   DataFrame.shape
+-   DataFrame.memory_usage
+-   DataFrame.empty
+-   DataFrame.is_copy
+-
+-Conversion
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.astype
+-   DataFrame.infer_objects
+-   DataFrame.copy
+-   DataFrame.isna
+-   DataFrame.notna
+-   DataFrame.bool
+-
+-Indexing, iteration
+-~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.head
+-   DataFrame.at
+-   DataFrame.iat
+-   DataFrame.loc
+-   DataFrame.iloc
+-   DataFrame.insert
+-   DataFrame.__iter__
+-   DataFrame.items
+-   DataFrame.iteritems
+-   DataFrame.keys
+-   DataFrame.iterrows
+-   DataFrame.itertuples
+-   DataFrame.lookup
+-   DataFrame.pop
+-   DataFrame.tail
+-   DataFrame.xs
+-   DataFrame.get
+-   DataFrame.isin
+-   DataFrame.where
+-   DataFrame.mask
+-   DataFrame.query
+-
+-For more information on ``.at``, ``.iat``, ``.loc``, and
+-``.iloc``,  see the :ref:`indexing documentation <indexing>`.
+-
+-Binary operator functions
+-~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.add
+-   DataFrame.sub
+-   DataFrame.mul
+-   DataFrame.div
+-   DataFrame.truediv
+-   DataFrame.floordiv
+-   DataFrame.mod
+-   DataFrame.pow
+-   DataFrame.dot
+-   DataFrame.radd
+-   DataFrame.rsub
+-   DataFrame.rmul
+-   DataFrame.rdiv
+-   DataFrame.rtruediv
+-   DataFrame.rfloordiv
+-   DataFrame.rmod
+-   DataFrame.rpow
+-   DataFrame.lt
+-   DataFrame.gt
+-   DataFrame.le
+-   DataFrame.ge
+-   DataFrame.ne
+-   DataFrame.eq
+-   DataFrame.combine
+-   DataFrame.combine_first
+-
+-Function application, GroupBy & window
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.apply
+-   DataFrame.applymap
+-   DataFrame.pipe
+-   DataFrame.agg
+-   DataFrame.aggregate
+-   DataFrame.transform
+-   DataFrame.groupby
+-   DataFrame.rolling
+-   DataFrame.expanding
+-   DataFrame.ewm
+-
+-.. _api.dataframe.stats:
+-
+-Computations / descriptive stats
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.abs
+-   DataFrame.all
+-   DataFrame.any
+-   DataFrame.clip
+-   DataFrame.clip_lower
+-   DataFrame.clip_upper
+-   DataFrame.compound
+-   DataFrame.corr
+-   DataFrame.corrwith
+-   DataFrame.count
+-   DataFrame.cov
+-   DataFrame.cummax
+-   DataFrame.cummin
+-   DataFrame.cumprod
+-   DataFrame.cumsum
+-   DataFrame.describe
+-   DataFrame.diff
+-   DataFrame.eval
+-   DataFrame.kurt
+-   DataFrame.kurtosis
+-   DataFrame.mad
+-   DataFrame.max
+-   DataFrame.mean
+-   DataFrame.median
+-   DataFrame.min
+-   DataFrame.mode
+-   DataFrame.pct_change
+-   DataFrame.prod
+-   DataFrame.product
+-   DataFrame.quantile
+-   DataFrame.rank
+-   DataFrame.round
+-   DataFrame.sem
+-   DataFrame.skew
+-   DataFrame.sum
+-   DataFrame.std
+-   DataFrame.var
+-   DataFrame.nunique
+-
+-Reindexing / selection / label manipulation
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.add_prefix
+-   DataFrame.add_suffix
+-   DataFrame.align
+-   DataFrame.at_time
+-   DataFrame.between_time
+-   DataFrame.drop
+-   DataFrame.drop_duplicates
+-   DataFrame.duplicated
+-   DataFrame.equals
+-   DataFrame.filter
+-   DataFrame.first
+-   DataFrame.head
+-   DataFrame.idxmax
+-   DataFrame.idxmin
+-   DataFrame.last
+-   DataFrame.reindex
+-   DataFrame.reindex_like
+-   DataFrame.rename
+-   DataFrame.rename_axis
+-   DataFrame.reset_index
+-   DataFrame.sample
+-   DataFrame.set_axis
+-   DataFrame.set_index
+-   DataFrame.tail
+-   DataFrame.take
+-   DataFrame.truncate
+-
+-.. _api.dataframe.missing:
+-
+-Missing data handling
+-~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.dropna
+-   DataFrame.fillna
+-   DataFrame.replace
+-   DataFrame.interpolate
+-
+-Reshaping, sorting, transposing
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.droplevel
+-   DataFrame.pivot
+-   DataFrame.pivot_table
+-   DataFrame.reorder_levels
+-   DataFrame.sort_values
+-   DataFrame.sort_index
+-   DataFrame.nlargest
+-   DataFrame.nsmallest
+-   DataFrame.swaplevel
+-   DataFrame.stack
+-   DataFrame.unstack
+-   DataFrame.swapaxes
+-   DataFrame.melt
+-   DataFrame.explode
+-   DataFrame.squeeze
+-   DataFrame.to_xarray
+-   DataFrame.T
+-   DataFrame.transpose
+-
+-Combining / joining / merging
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.append
+-   DataFrame.assign
+-   DataFrame.join
+-   DataFrame.merge
+-   DataFrame.update
+-
+-Time series-related
+-~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.asfreq
+-   DataFrame.asof
+-   DataFrame.shift
+-   DataFrame.slice_shift
+-   DataFrame.tshift
+-   DataFrame.first_valid_index
+-   DataFrame.last_valid_index
+-   DataFrame.resample
+-   DataFrame.to_period
+-   DataFrame.to_timestamp
+-   DataFrame.tz_convert
+-   DataFrame.tz_localize
+-
+-.. _api.dataframe.plotting:
+-
+-Plotting
+-~~~~~~~~
+-``DataFrame.plot`` is both a callable method and a namespace attribute for
+-specific plotting methods of the form ``DataFrame.plot.<kind>``.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_callable.rst
+-
+-   DataFrame.plot
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_method.rst
+-
+-   DataFrame.plot.area
+-   DataFrame.plot.bar
+-   DataFrame.plot.barh
+-   DataFrame.plot.box
+-   DataFrame.plot.density
+-   DataFrame.plot.hexbin
+-   DataFrame.plot.hist
+-   DataFrame.plot.kde
+-   DataFrame.plot.line
+-   DataFrame.plot.pie
+-   DataFrame.plot.scatter
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.boxplot
+-   DataFrame.hist
+-
+-
+-.. _api.frame.sparse:
+-
+-Sparse accessor
+-~~~~~~~~~~~~~~~
+-
+-Sparse-dtype specific methods and attributes are provided under the
+-``DataFrame.sparse`` accessor.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_attribute.rst
+-
+-   DataFrame.sparse.density
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.sparse.from_spmatrix
+-   DataFrame.sparse.to_coo
+-   DataFrame.sparse.to_dense
+-
+-
+-Serialization / IO / conversion
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrame.from_dict
+-   DataFrame.from_items
+-   DataFrame.from_records
+-   DataFrame.info
+-   DataFrame.to_parquet
+-   DataFrame.to_pickle
+-   DataFrame.to_csv
+-   DataFrame.to_hdf
+-   DataFrame.to_sql
+-   DataFrame.to_dict
+-   DataFrame.to_excel
+-   DataFrame.to_json
+-   DataFrame.to_html
+-   DataFrame.to_feather
+-   DataFrame.to_latex
+-   DataFrame.to_stata
+-   DataFrame.to_msgpack
+-   DataFrame.to_gbq
+-   DataFrame.to_records
+-   DataFrame.to_sparse
+-   DataFrame.to_dense
+-   DataFrame.to_string
+-   DataFrame.to_clipboard
+-   DataFrame.style
+-
+-Sparse
+-~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   SparseDataFrame.to_coo
+diff --git a/doc/source/reference/general_functions.rst b/doc/source/reference/general_functions.rst
+deleted file mode 100644
+index b5832cb8a..000000000
+--- a/doc/source/reference/general_functions.rst
++++ /dev/null
+@@ -1,87 +0,0 @@
+-{{ header }}
+-
+-.. _api.general_functions:
+-
+-=================
+-General functions
+-=================
+-.. currentmodule:: pandas
+-
+-Data manipulations
+-~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   melt
+-   pivot
+-   pivot_table
+-   crosstab
+-   cut
+-   qcut
+-   merge
+-   merge_ordered
+-   merge_asof
+-   concat
+-   get_dummies
+-   factorize
+-   unique
+-   wide_to_long
+-
+-Top-level missing data
+-~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   isna
+-   isnull
+-   notna
+-   notnull
+-
+-Top-level conversions
+-~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   to_numeric
+-
+-Top-level dealing with datetimelike
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   to_datetime
+-   to_timedelta
+-   date_range
+-   bdate_range
+-   period_range
+-   timedelta_range
+-   infer_freq
+-
+-Top-level dealing with intervals
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   interval_range
+-
+-Top-level evaluation
+-~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   eval
+-
+-Hashing
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   util.hash_array
+-   util.hash_pandas_object
+-
+-Testing
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   test
+diff --git a/doc/source/reference/general_utility_functions.rst b/doc/source/reference/general_utility_functions.rst
+deleted file mode 100644
+index 9c69770c0..000000000
+--- a/doc/source/reference/general_utility_functions.rst
++++ /dev/null
+@@ -1,109 +0,0 @@
+-{{ header }}
+-
+-.. _api.general_utility_functions:
+-
+-=========================
+-General utility functions
+-=========================
+-.. currentmodule:: pandas
+-
+-Working with options
+---------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   describe_option
+-   reset_option
+-   get_option
+-   set_option
+-   option_context
+-
+-Testing functions
+------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   testing.assert_frame_equal
+-   testing.assert_series_equal
+-   testing.assert_index_equal
+-
+-Exceptions and warnings
+------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   errors.DtypeWarning
+-   errors.EmptyDataError
+-   errors.OutOfBoundsDatetime
+-   errors.ParserError
+-   errors.ParserWarning
+-   errors.PerformanceWarning
+-   errors.UnsortedIndexError
+-   errors.UnsupportedFunctionCall
+-
+-Data types related functionality
+---------------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   api.types.union_categoricals
+-   api.types.infer_dtype
+-   api.types.pandas_dtype
+-
+-Dtype introspection
+-~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    api.types.is_bool_dtype
+-    api.types.is_categorical_dtype
+-    api.types.is_complex_dtype
+-    api.types.is_datetime64_any_dtype
+-    api.types.is_datetime64_dtype
+-    api.types.is_datetime64_ns_dtype
+-    api.types.is_datetime64tz_dtype
+-    api.types.is_extension_type
+-    api.types.is_extension_array_dtype
+-    api.types.is_float_dtype
+-    api.types.is_int64_dtype
+-    api.types.is_integer_dtype
+-    api.types.is_interval_dtype
+-    api.types.is_numeric_dtype
+-    api.types.is_object_dtype
+-    api.types.is_period_dtype
+-    api.types.is_signed_integer_dtype
+-    api.types.is_string_dtype
+-    api.types.is_timedelta64_dtype
+-    api.types.is_timedelta64_ns_dtype
+-    api.types.is_unsigned_integer_dtype
+-    api.types.is_sparse
+-
+-Iterable introspection
+-~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    api.types.is_dict_like
+-    api.types.is_file_like
+-    api.types.is_list_like
+-    api.types.is_named_tuple
+-    api.types.is_iterator
+-
+-Scalar introspection
+-~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    api.types.is_bool
+-    api.types.is_categorical
+-    api.types.is_complex
+-    api.types.is_datetimetz
+-    api.types.is_float
+-    api.types.is_hashable
+-    api.types.is_integer
+-    api.types.is_interval
+-    api.types.is_number
+-    api.types.is_period
+-    api.types.is_re
+-    api.types.is_re_compilable
+-    api.types.is_scalar
+diff --git a/doc/source/reference/groupby.rst b/doc/source/reference/groupby.rst
+deleted file mode 100644
+index 921eb737a..000000000
+--- a/doc/source/reference/groupby.rst
++++ /dev/null
+@@ -1,137 +0,0 @@
+-{{ header }}
+-
+-.. _api.groupby:
+-
+-=======
+-GroupBy
+-=======
+-.. currentmodule:: pandas.core.groupby
+-
+-GroupBy objects are returned by groupby calls: :func:`pandas.DataFrame.groupby`, :func:`pandas.Series.groupby`, etc.
+-
+-Indexing, iteration
+--------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   GroupBy.__iter__
+-   GroupBy.groups
+-   GroupBy.indices
+-   GroupBy.get_group
+-
+-.. currentmodule:: pandas
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   Grouper
+-
+-.. currentmodule:: pandas.core.groupby
+-
+-Function application
+---------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   GroupBy.apply
+-   GroupBy.agg
+-   GroupBy.aggregate
+-   GroupBy.transform
+-   GroupBy.pipe
+-
+-Computations / descriptive stats
+---------------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   GroupBy.all
+-   GroupBy.any
+-   GroupBy.bfill
+-   GroupBy.count
+-   GroupBy.cumcount
+-   GroupBy.cummax
+-   GroupBy.cummin
+-   GroupBy.cumprod
+-   GroupBy.cumsum
+-   GroupBy.ffill
+-   GroupBy.first
+-   GroupBy.head
+-   GroupBy.last
+-   GroupBy.max
+-   GroupBy.mean
+-   GroupBy.median
+-   GroupBy.min
+-   GroupBy.ngroup
+-   GroupBy.nth
+-   GroupBy.ohlc
+-   GroupBy.prod
+-   GroupBy.rank
+-   GroupBy.pct_change
+-   GroupBy.size
+-   GroupBy.sem
+-   GroupBy.std
+-   GroupBy.sum
+-   GroupBy.var
+-   GroupBy.tail
+-
+-The following methods are available in both ``SeriesGroupBy`` and
+-``DataFrameGroupBy`` objects, but may differ slightly, usually in that
+-the ``DataFrameGroupBy`` version usually permits the specification of an
+-axis argument, and often an argument indicating whether to restrict
+-application to columns of a specific data type.
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrameGroupBy.all
+-   DataFrameGroupBy.any
+-   DataFrameGroupBy.bfill
+-   DataFrameGroupBy.corr
+-   DataFrameGroupBy.count
+-   DataFrameGroupBy.cov
+-   DataFrameGroupBy.cummax
+-   DataFrameGroupBy.cummin
+-   DataFrameGroupBy.cumprod
+-   DataFrameGroupBy.cumsum
+-   DataFrameGroupBy.describe
+-   DataFrameGroupBy.diff
+-   DataFrameGroupBy.ffill
+-   DataFrameGroupBy.fillna
+-   DataFrameGroupBy.filter
+-   DataFrameGroupBy.hist
+-   DataFrameGroupBy.idxmax
+-   DataFrameGroupBy.idxmin
+-   DataFrameGroupBy.mad
+-   DataFrameGroupBy.nunique
+-   DataFrameGroupBy.pct_change
+-   DataFrameGroupBy.plot
+-   DataFrameGroupBy.quantile
+-   DataFrameGroupBy.rank
+-   DataFrameGroupBy.resample
+-   DataFrameGroupBy.shift
+-   DataFrameGroupBy.size
+-   DataFrameGroupBy.skew
+-   DataFrameGroupBy.take
+-   DataFrameGroupBy.tshift
+-
+-The following methods are available only for ``SeriesGroupBy`` objects.
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   SeriesGroupBy.nlargest
+-   SeriesGroupBy.nsmallest
+-   SeriesGroupBy.nunique
+-   SeriesGroupBy.unique
+-   SeriesGroupBy.value_counts
+-   SeriesGroupBy.is_monotonic_increasing
+-   SeriesGroupBy.is_monotonic_decreasing
+-
+-The following methods are available only for ``DataFrameGroupBy`` objects.
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   DataFrameGroupBy.corrwith
+-   DataFrameGroupBy.boxplot
+diff --git a/doc/source/reference/index.rst b/doc/source/reference/index.rst
+deleted file mode 100644
+index 12ca318c8..000000000
+--- a/doc/source/reference/index.rst
++++ /dev/null
+@@ -1,74 +0,0 @@
+-{{ header }}
+-
+-.. _api:
+-
+-=============
+-API reference
+-=============
+-
+-This page gives an overview of all public pandas objects, functions and
+-methods. All classes and functions exposed in ``pandas.*`` namespace are public.
+-
+-Some subpackages are public which include ``pandas.errors``,
+-``pandas.plotting``, and ``pandas.testing``. Public functions in
+-``pandas.io`` and ``pandas.tseries`` submodules are mentioned in
+-the documentation. ``pandas.api.types`` subpackage holds some
+-public functions related to data types in pandas.
+-
+-.. warning::
+-
+-    The ``pandas.core``, ``pandas.compat``, and ``pandas.util`` top-level modules are PRIVATE. Stable functionality in such modules is not guaranteed.
+-
+-.. If you update this toctree, also update the manual toctree in the
+-   main index.rst.template
+-
+-.. toctree::
+-   :maxdepth: 2
+-
+-   io
+-   general_functions
+-   series
+-   frame
+-   arrays
+-   panel
+-   indexing
+-   offset_frequency
+-   window
+-   groupby
+-   resampling
+-   style
+-   plotting
+-   general_utility_functions
+-   extensions
+-
+-.. This is to prevent warnings in the doc build. We don't want to encourage
+-.. these methods.
+-
+-..
+-    .. toctree::
+-
+-        api/pandas.DataFrame.blocks
+-        api/pandas.DataFrame.as_matrix
+-        api/pandas.DataFrame.ix
+-        api/pandas.Index.asi8
+-        api/pandas.Index.data
+-        api/pandas.Index.flags
+-        api/pandas.Index.holds_integer
+-        api/pandas.Index.is_type_compatible
+-        api/pandas.Index.nlevels
+-        api/pandas.Index.sort
+-        api/pandas.Series.asobject
+-        api/pandas.Series.blocks
+-        api/pandas.Series.from_array
+-        api/pandas.Series.ix
+-        api/pandas.Series.imag
+-        api/pandas.Series.real
+-
+-
+-.. Can't convince sphinx to generate toctree for this class attribute.
+-.. So we do it manually to avoid a warning
+-
+-..
+-    .. toctree::
+-
+-        api/pandas.api.extensions.ExtensionDtype.na_value
+diff --git a/doc/source/reference/indexing.rst b/doc/source/reference/indexing.rst
+deleted file mode 100644
+index 576f734d5..000000000
+--- a/doc/source/reference/indexing.rst
++++ /dev/null
+@@ -1,499 +0,0 @@
+-{{ header }}
+-
+-.. _api.indexing:
+-
+-=============
+-Index objects
+-=============
+-
+-Index
+------
+-.. currentmodule:: pandas
+-
+-**Many of these methods or variants thereof are available on the objects
+-that contain an index (Series/DataFrame) and those should most likely be
+-used before calling these methods directly.**
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   Index
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Index.values
+-   Index.is_monotonic
+-   Index.is_monotonic_increasing
+-   Index.is_monotonic_decreasing
+-   Index.is_unique
+-   Index.has_duplicates
+-   Index.hasnans
+-   Index.dtype
+-   Index.dtype_str
+-   Index.inferred_type
+-   Index.is_all_dates
+-   Index.shape
+-   Index.name
+-   Index.names
+-   Index.nbytes
+-   Index.ndim
+-   Index.size
+-   Index.empty
+-   Index.strides
+-   Index.itemsize
+-   Index.base
+-   Index.T
+-   Index.memory_usage
+-
+-Modifying and computations
+-~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Index.all
+-   Index.any
+-   Index.argmin
+-   Index.argmax
+-   Index.copy
+-   Index.delete
+-   Index.drop
+-   Index.drop_duplicates
+-   Index.duplicated
+-   Index.equals
+-   Index.factorize
+-   Index.identical
+-   Index.insert
+-   Index.is_
+-   Index.is_boolean
+-   Index.is_categorical
+-   Index.is_floating
+-   Index.is_integer
+-   Index.is_interval
+-   Index.is_mixed
+-   Index.is_numeric
+-   Index.is_object
+-   Index.min
+-   Index.max
+-   Index.reindex
+-   Index.rename
+-   Index.repeat
+-   Index.where
+-   Index.take
+-   Index.putmask
+-   Index.unique
+-   Index.nunique
+-   Index.value_counts
+-
+-Compatibility with MultiIndex
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Index.set_names
+-   Index.is_lexsorted_for_tuple
+-   Index.droplevel
+-
+-Missing values
+-~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Index.fillna
+-   Index.dropna
+-   Index.isna
+-   Index.notna
+-
+-Conversion
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Index.astype
+-   Index.item
+-   Index.map
+-   Index.ravel
+-   Index.to_list
+-   Index.to_native_types
+-   Index.to_series
+-   Index.to_frame
+-   Index.view
+-
+-Sorting
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Index.argsort
+-   Index.searchsorted
+-   Index.sort_values
+-
+-Time-specific operations
+-~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Index.shift
+-
+-Combining / joining / set operations
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Index.append
+-   Index.join
+-   Index.intersection
+-   Index.union
+-   Index.difference
+-   Index.symmetric_difference
+-
+-Selecting
+-~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Index.asof
+-   Index.asof_locs
+-   Index.contains
+-   Index.get_duplicates
+-   Index.get_indexer
+-   Index.get_indexer_for
+-   Index.get_indexer_non_unique
+-   Index.get_level_values
+-   Index.get_loc
+-   Index.get_slice_bound
+-   Index.get_value
+-   Index.get_values
+-   Index.set_value
+-   Index.isin
+-   Index.slice_indexer
+-   Index.slice_locs
+-
+-.. _api.numericindex:
+-
+-Numeric Index
+--------------
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   RangeIndex
+-   Int64Index
+-   UInt64Index
+-   Float64Index
+-
+-.. We need this autosummary so that the methods are generated.
+-.. Separate block, since they aren't classes.
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   RangeIndex.start
+-   RangeIndex.stop
+-   RangeIndex.step
+-   RangeIndex.from_range
+-
+-.. _api.categoricalindex:
+-
+-CategoricalIndex
+-----------------
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   CategoricalIndex
+-
+-Categorical components
+-~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   CategoricalIndex.codes
+-   CategoricalIndex.categories
+-   CategoricalIndex.ordered
+-   CategoricalIndex.rename_categories
+-   CategoricalIndex.reorder_categories
+-   CategoricalIndex.add_categories
+-   CategoricalIndex.remove_categories
+-   CategoricalIndex.remove_unused_categories
+-   CategoricalIndex.set_categories
+-   CategoricalIndex.as_ordered
+-   CategoricalIndex.as_unordered
+-
+-Modifying and computations
+-~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   CategoricalIndex.map
+-   CategoricalIndex.equals
+-
+-.. _api.intervalindex:
+-
+-IntervalIndex
+--------------
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   IntervalIndex
+-
+-IntervalIndex components
+-~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   IntervalIndex.from_arrays
+-   IntervalIndex.from_tuples
+-   IntervalIndex.from_breaks
+-   IntervalIndex.left
+-   IntervalIndex.right
+-   IntervalIndex.mid
+-   IntervalIndex.closed
+-   IntervalIndex.length
+-   IntervalIndex.values
+-   IntervalIndex.is_empty
+-   IntervalIndex.is_non_overlapping_monotonic
+-   IntervalIndex.is_overlapping
+-   IntervalIndex.get_loc
+-   IntervalIndex.get_indexer
+-   IntervalIndex.set_closed
+-   IntervalIndex.contains
+-   IntervalIndex.overlaps
+-   IntervalIndex.to_tuples
+-
+-.. _api.multiindex:
+-
+-MultiIndex
+-----------
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   MultiIndex
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   IndexSlice
+-
+-MultiIndex constructors
+-~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   MultiIndex.from_arrays
+-   MultiIndex.from_tuples
+-   MultiIndex.from_product
+-   MultiIndex.from_frame
+-
+-MultiIndex properties
+-~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   MultiIndex.names
+-   MultiIndex.levels
+-   MultiIndex.codes
+-   MultiIndex.nlevels
+-   MultiIndex.levshape
+-
+-MultiIndex components
+-~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   MultiIndex.set_levels
+-   MultiIndex.set_codes
+-   MultiIndex.to_hierarchical
+-   MultiIndex.to_flat_index
+-   MultiIndex.to_frame
+-   MultiIndex.is_lexsorted
+-   MultiIndex.sortlevel
+-   MultiIndex.droplevel
+-   MultiIndex.swaplevel
+-   MultiIndex.reorder_levels
+-   MultiIndex.remove_unused_levels
+-
+-MultiIndex selecting
+-~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   MultiIndex.get_loc
+-   MultiIndex.get_loc_level
+-   MultiIndex.get_indexer
+-   MultiIndex.get_level_values
+-
+-.. _api.datetimeindex:
+-
+-DatetimeIndex
+--------------
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   DatetimeIndex
+-
+-Time/Date components
+-~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DatetimeIndex.year
+-   DatetimeIndex.month
+-   DatetimeIndex.day
+-   DatetimeIndex.hour
+-   DatetimeIndex.minute
+-   DatetimeIndex.second
+-   DatetimeIndex.microsecond
+-   DatetimeIndex.nanosecond
+-   DatetimeIndex.date
+-   DatetimeIndex.time
+-   DatetimeIndex.timetz
+-   DatetimeIndex.dayofyear
+-   DatetimeIndex.weekofyear
+-   DatetimeIndex.week
+-   DatetimeIndex.dayofweek
+-   DatetimeIndex.weekday
+-   DatetimeIndex.quarter
+-   DatetimeIndex.tz
+-   DatetimeIndex.freq
+-   DatetimeIndex.freqstr
+-   DatetimeIndex.is_month_start
+-   DatetimeIndex.is_month_end
+-   DatetimeIndex.is_quarter_start
+-   DatetimeIndex.is_quarter_end
+-   DatetimeIndex.is_year_start
+-   DatetimeIndex.is_year_end
+-   DatetimeIndex.is_leap_year
+-   DatetimeIndex.inferred_freq
+-
+-Selecting
+-~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DatetimeIndex.indexer_at_time
+-   DatetimeIndex.indexer_between_time
+-
+-
+-Time-specific operations
+-~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DatetimeIndex.normalize
+-   DatetimeIndex.strftime
+-   DatetimeIndex.snap
+-   DatetimeIndex.tz_convert
+-   DatetimeIndex.tz_localize
+-   DatetimeIndex.round
+-   DatetimeIndex.floor
+-   DatetimeIndex.ceil
+-   DatetimeIndex.month_name
+-   DatetimeIndex.day_name
+-
+-Conversion
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   DatetimeIndex.to_period
+-   DatetimeIndex.to_perioddelta
+-   DatetimeIndex.to_pydatetime
+-   DatetimeIndex.to_series
+-   DatetimeIndex.to_frame
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-    :toctree: api/
+-
+-    DatetimeIndex.mean
+-
+-TimedeltaIndex
+---------------
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   TimedeltaIndex
+-
+-Components
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   TimedeltaIndex.days
+-   TimedeltaIndex.seconds
+-   TimedeltaIndex.microseconds
+-   TimedeltaIndex.nanoseconds
+-   TimedeltaIndex.components
+-   TimedeltaIndex.inferred_freq
+-
+-Conversion
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   TimedeltaIndex.to_pytimedelta
+-   TimedeltaIndex.to_series
+-   TimedeltaIndex.round
+-   TimedeltaIndex.floor
+-   TimedeltaIndex.ceil
+-   TimedeltaIndex.to_frame
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-    :toctree: api/
+-
+-    TimedeltaIndex.mean
+-
+-.. currentmodule:: pandas
+-
+-PeriodIndex
+------------
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   PeriodIndex
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-    :toctree: api/
+-
+-    PeriodIndex.day
+-    PeriodIndex.dayofweek
+-    PeriodIndex.dayofyear
+-    PeriodIndex.days_in_month
+-    PeriodIndex.daysinmonth
+-    PeriodIndex.end_time
+-    PeriodIndex.freq
+-    PeriodIndex.freqstr
+-    PeriodIndex.hour
+-    PeriodIndex.is_leap_year
+-    PeriodIndex.minute
+-    PeriodIndex.month
+-    PeriodIndex.quarter
+-    PeriodIndex.qyear
+-    PeriodIndex.second
+-    PeriodIndex.start_time
+-    PeriodIndex.week
+-    PeriodIndex.weekday
+-    PeriodIndex.weekofyear
+-    PeriodIndex.year
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-    :toctree: api/
+-
+-    PeriodIndex.asfreq
+-    PeriodIndex.strftime
+-    PeriodIndex.to_timestamp
+diff --git a/doc/source/reference/io.rst b/doc/source/reference/io.rst
+deleted file mode 100644
+index 666220d39..000000000
+--- a/doc/source/reference/io.rst
++++ /dev/null
+@@ -1,140 +0,0 @@
+-{{ header }}
+-
+-.. _api.io:
+-
+-============
+-Input/output
+-============
+-.. currentmodule:: pandas
+-
+-Pickling
+-~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_pickle
+-
+-Flat file
+-~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_table
+-   read_csv
+-   read_fwf
+-   read_msgpack
+-
+-Clipboard
+-~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_clipboard
+-
+-Excel
+-~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_excel
+-   ExcelFile.parse
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/class_without_autosummary.rst
+-
+-   ExcelWriter
+-
+-JSON
+-~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_json
+-
+-.. currentmodule:: pandas.io.json
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   json_normalize
+-   build_table_schema
+-
+-.. currentmodule:: pandas
+-
+-HTML
+-~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_html
+-
+-HDFStore: PyTables (HDF5)
+-~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_hdf
+-   HDFStore.put
+-   HDFStore.append
+-   HDFStore.get
+-   HDFStore.select
+-   HDFStore.info
+-   HDFStore.keys
+-   HDFStore.groups
+-   HDFStore.walk
+-
+-Feather
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_feather
+-
+-Parquet
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_parquet
+-
+-SAS
+-~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_sas
+-
+-SQL
+-~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_sql_table
+-   read_sql_query
+-   read_sql
+-
+-Google BigQuery
+-~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_gbq
+-
+-STATA
+-~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   read_stata
+-
+-.. currentmodule:: pandas.io.stata
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   StataReader.data
+-   StataReader.data_label
+-   StataReader.value_labels
+-   StataReader.variable_labels
+-   StataWriter.write_file
+diff --git a/doc/source/reference/offset_frequency.rst b/doc/source/reference/offset_frequency.rst
+deleted file mode 100644
+index 4a58055f1..000000000
+--- a/doc/source/reference/offset_frequency.rst
++++ /dev/null
+@@ -1,1387 +0,0 @@
+-{{ header }}
+-
+-.. _api.dateoffsets:
+-
+-============
+-Date offsets
+-============
+-.. currentmodule:: pandas.tseries.offsets
+-
+-DateOffset
+-----------
+-.. autosummary::
+-   :toctree: api/
+-
+-    DateOffset
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    DateOffset.freqstr
+-    DateOffset.kwds
+-    DateOffset.name
+-    DateOffset.nanos
+-    DateOffset.normalize
+-    DateOffset.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    DateOffset.apply
+-    DateOffset.copy
+-    DateOffset.isAnchored
+-    DateOffset.onOffset
+-
+-BusinessDay
+------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessDay
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessDay.freqstr
+-    BusinessDay.kwds
+-    BusinessDay.name
+-    BusinessDay.nanos
+-    BusinessDay.normalize
+-    BusinessDay.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessDay.apply
+-    BusinessDay.apply_index
+-    BusinessDay.copy
+-    BusinessDay.isAnchored
+-    BusinessDay.onOffset
+-
+-BusinessHour
+-------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessHour
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessHour.freqstr
+-    BusinessHour.kwds
+-    BusinessHour.name
+-    BusinessHour.nanos
+-    BusinessHour.normalize
+-    BusinessHour.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessHour.apply
+-    BusinessHour.copy
+-    BusinessHour.isAnchored
+-    BusinessHour.onOffset
+-
+-CustomBusinessDay
+------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessDay
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessDay.freqstr
+-    CustomBusinessDay.kwds
+-    CustomBusinessDay.name
+-    CustomBusinessDay.nanos
+-    CustomBusinessDay.normalize
+-    CustomBusinessDay.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessDay.apply
+-    CustomBusinessDay.copy
+-    CustomBusinessDay.isAnchored
+-    CustomBusinessDay.onOffset
+-
+-CustomBusinessHour
+-------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessHour
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessHour.freqstr
+-    CustomBusinessHour.kwds
+-    CustomBusinessHour.name
+-    CustomBusinessHour.nanos
+-    CustomBusinessHour.normalize
+-    CustomBusinessHour.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessHour.apply
+-    CustomBusinessHour.copy
+-    CustomBusinessHour.isAnchored
+-    CustomBusinessHour.onOffset
+-
+-MonthOffset
+------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    MonthOffset
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    MonthOffset.freqstr
+-    MonthOffset.kwds
+-    MonthOffset.name
+-    MonthOffset.nanos
+-    MonthOffset.normalize
+-    MonthOffset.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    MonthOffset.apply
+-    MonthOffset.apply_index
+-    MonthOffset.copy
+-    MonthOffset.isAnchored
+-    MonthOffset.onOffset
+-
+-MonthEnd
+---------
+-.. autosummary::
+-   :toctree: api/
+-
+-    MonthEnd
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    MonthEnd.freqstr
+-    MonthEnd.kwds
+-    MonthEnd.name
+-    MonthEnd.nanos
+-    MonthEnd.normalize
+-    MonthEnd.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    MonthEnd.apply
+-    MonthEnd.apply_index
+-    MonthEnd.copy
+-    MonthEnd.isAnchored
+-    MonthEnd.onOffset
+-
+-MonthBegin
+-----------
+-.. autosummary::
+-   :toctree: api/
+-
+-    MonthBegin
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    MonthBegin.freqstr
+-    MonthBegin.kwds
+-    MonthBegin.name
+-    MonthBegin.nanos
+-    MonthBegin.normalize
+-    MonthBegin.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    MonthBegin.apply
+-    MonthBegin.apply_index
+-    MonthBegin.copy
+-    MonthBegin.isAnchored
+-    MonthBegin.onOffset
+-
+-BusinessMonthEnd
+-----------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessMonthEnd
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessMonthEnd.freqstr
+-    BusinessMonthEnd.kwds
+-    BusinessMonthEnd.name
+-    BusinessMonthEnd.nanos
+-    BusinessMonthEnd.normalize
+-    BusinessMonthEnd.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessMonthEnd.apply
+-    BusinessMonthEnd.apply_index
+-    BusinessMonthEnd.copy
+-    BusinessMonthEnd.isAnchored
+-    BusinessMonthEnd.onOffset
+-
+-BusinessMonthBegin
+-------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessMonthBegin
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessMonthBegin.freqstr
+-    BusinessMonthBegin.kwds
+-    BusinessMonthBegin.name
+-    BusinessMonthBegin.nanos
+-    BusinessMonthBegin.normalize
+-    BusinessMonthBegin.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BusinessMonthBegin.apply
+-    BusinessMonthBegin.apply_index
+-    BusinessMonthBegin.copy
+-    BusinessMonthBegin.isAnchored
+-    BusinessMonthBegin.onOffset
+-
+-CustomBusinessMonthEnd
+-----------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessMonthEnd
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessMonthEnd.freqstr
+-    CustomBusinessMonthEnd.kwds
+-    CustomBusinessMonthEnd.m_offset
+-    CustomBusinessMonthEnd.name
+-    CustomBusinessMonthEnd.nanos
+-    CustomBusinessMonthEnd.normalize
+-    CustomBusinessMonthEnd.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessMonthEnd.apply
+-    CustomBusinessMonthEnd.copy
+-    CustomBusinessMonthEnd.isAnchored
+-    CustomBusinessMonthEnd.onOffset
+-
+-CustomBusinessMonthBegin
+-------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessMonthBegin
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessMonthBegin.freqstr
+-    CustomBusinessMonthBegin.kwds
+-    CustomBusinessMonthBegin.m_offset
+-    CustomBusinessMonthBegin.name
+-    CustomBusinessMonthBegin.nanos
+-    CustomBusinessMonthBegin.normalize
+-    CustomBusinessMonthBegin.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CustomBusinessMonthBegin.apply
+-    CustomBusinessMonthBegin.copy
+-    CustomBusinessMonthBegin.isAnchored
+-    CustomBusinessMonthBegin.onOffset
+-
+-SemiMonthOffset
+----------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    SemiMonthOffset
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    SemiMonthOffset.freqstr
+-    SemiMonthOffset.kwds
+-    SemiMonthOffset.name
+-    SemiMonthOffset.nanos
+-    SemiMonthOffset.normalize
+-    SemiMonthOffset.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    SemiMonthOffset.apply
+-    SemiMonthOffset.apply_index
+-    SemiMonthOffset.copy
+-    SemiMonthOffset.isAnchored
+-    SemiMonthOffset.onOffset
+-
+-SemiMonthEnd
+-------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    SemiMonthEnd
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    SemiMonthEnd.freqstr
+-    SemiMonthEnd.kwds
+-    SemiMonthEnd.name
+-    SemiMonthEnd.nanos
+-    SemiMonthEnd.normalize
+-    SemiMonthEnd.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    SemiMonthEnd.apply
+-    SemiMonthEnd.apply_index
+-    SemiMonthEnd.copy
+-    SemiMonthEnd.isAnchored
+-    SemiMonthEnd.onOffset
+-
+-SemiMonthBegin
+---------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    SemiMonthBegin
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    SemiMonthBegin.freqstr
+-    SemiMonthBegin.kwds
+-    SemiMonthBegin.name
+-    SemiMonthBegin.nanos
+-    SemiMonthBegin.normalize
+-    SemiMonthBegin.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    SemiMonthBegin.apply
+-    SemiMonthBegin.apply_index
+-    SemiMonthBegin.copy
+-    SemiMonthBegin.isAnchored
+-    SemiMonthBegin.onOffset
+-
+-Week
+-----
+-.. autosummary::
+-   :toctree: api/
+-
+-    Week
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Week.freqstr
+-    Week.kwds
+-    Week.name
+-    Week.nanos
+-    Week.normalize
+-    Week.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Week.apply
+-    Week.apply_index
+-    Week.copy
+-    Week.isAnchored
+-    Week.onOffset
+-
+-WeekOfMonth
+------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    WeekOfMonth
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    WeekOfMonth.freqstr
+-    WeekOfMonth.kwds
+-    WeekOfMonth.name
+-    WeekOfMonth.nanos
+-    WeekOfMonth.normalize
+-    WeekOfMonth.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    WeekOfMonth.apply
+-    WeekOfMonth.copy
+-    WeekOfMonth.isAnchored
+-    WeekOfMonth.onOffset
+-
+-LastWeekOfMonth
+----------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    LastWeekOfMonth
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    LastWeekOfMonth.freqstr
+-    LastWeekOfMonth.kwds
+-    LastWeekOfMonth.name
+-    LastWeekOfMonth.nanos
+-    LastWeekOfMonth.normalize
+-    LastWeekOfMonth.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    LastWeekOfMonth.apply
+-    LastWeekOfMonth.copy
+-    LastWeekOfMonth.isAnchored
+-    LastWeekOfMonth.onOffset
+-
+-QuarterOffset
+--------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    QuarterOffset
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    QuarterOffset.freqstr
+-    QuarterOffset.kwds
+-    QuarterOffset.name
+-    QuarterOffset.nanos
+-    QuarterOffset.normalize
+-    QuarterOffset.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    QuarterOffset.apply
+-    QuarterOffset.apply_index
+-    QuarterOffset.copy
+-    QuarterOffset.isAnchored
+-    QuarterOffset.onOffset
+-
+-BQuarterEnd
+------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    BQuarterEnd
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BQuarterEnd.freqstr
+-    BQuarterEnd.kwds
+-    BQuarterEnd.name
+-    BQuarterEnd.nanos
+-    BQuarterEnd.normalize
+-    BQuarterEnd.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BQuarterEnd.apply
+-    BQuarterEnd.apply_index
+-    BQuarterEnd.copy
+-    BQuarterEnd.isAnchored
+-    BQuarterEnd.onOffset
+-
+-BQuarterBegin
+--------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    BQuarterBegin
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BQuarterBegin.freqstr
+-    BQuarterBegin.kwds
+-    BQuarterBegin.name
+-    BQuarterBegin.nanos
+-    BQuarterBegin.normalize
+-    BQuarterBegin.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BQuarterBegin.apply
+-    BQuarterBegin.apply_index
+-    BQuarterBegin.copy
+-    BQuarterBegin.isAnchored
+-    BQuarterBegin.onOffset
+-
+-QuarterEnd
+-----------
+-.. autosummary::
+-   :toctree: api/
+-
+-    QuarterEnd
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    QuarterEnd.freqstr
+-    QuarterEnd.kwds
+-    QuarterEnd.name
+-    QuarterEnd.nanos
+-    QuarterEnd.normalize
+-    QuarterEnd.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    QuarterEnd.apply
+-    QuarterEnd.apply_index
+-    QuarterEnd.copy
+-    QuarterEnd.isAnchored
+-    QuarterEnd.onOffset
+-
+-QuarterBegin
+-------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    QuarterBegin
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    QuarterBegin.freqstr
+-    QuarterBegin.kwds
+-    QuarterBegin.name
+-    QuarterBegin.nanos
+-    QuarterBegin.normalize
+-    QuarterBegin.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    QuarterBegin.apply
+-    QuarterBegin.apply_index
+-    QuarterBegin.copy
+-    QuarterBegin.isAnchored
+-    QuarterBegin.onOffset
+-
+-YearOffset
+-----------
+-.. autosummary::
+-   :toctree: api/
+-
+-    YearOffset
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    YearOffset.freqstr
+-    YearOffset.kwds
+-    YearOffset.name
+-    YearOffset.nanos
+-    YearOffset.normalize
+-    YearOffset.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    YearOffset.apply
+-    YearOffset.apply_index
+-    YearOffset.copy
+-    YearOffset.isAnchored
+-    YearOffset.onOffset
+-
+-BYearEnd
+---------
+-.. autosummary::
+-   :toctree: api/
+-
+-    BYearEnd
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BYearEnd.freqstr
+-    BYearEnd.kwds
+-    BYearEnd.name
+-    BYearEnd.nanos
+-    BYearEnd.normalize
+-    BYearEnd.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BYearEnd.apply
+-    BYearEnd.apply_index
+-    BYearEnd.copy
+-    BYearEnd.isAnchored
+-    BYearEnd.onOffset
+-
+-BYearBegin
+-----------
+-.. autosummary::
+-   :toctree: api/
+-
+-    BYearBegin
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BYearBegin.freqstr
+-    BYearBegin.kwds
+-    BYearBegin.name
+-    BYearBegin.nanos
+-    BYearBegin.normalize
+-    BYearBegin.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BYearBegin.apply
+-    BYearBegin.apply_index
+-    BYearBegin.copy
+-    BYearBegin.isAnchored
+-    BYearBegin.onOffset
+-
+-YearEnd
+--------
+-.. autosummary::
+-   :toctree: api/
+-
+-    YearEnd
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    YearEnd.freqstr
+-    YearEnd.kwds
+-    YearEnd.name
+-    YearEnd.nanos
+-    YearEnd.normalize
+-    YearEnd.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    YearEnd.apply
+-    YearEnd.apply_index
+-    YearEnd.copy
+-    YearEnd.isAnchored
+-    YearEnd.onOffset
+-
+-YearBegin
+----------
+-.. autosummary::
+-   :toctree: api/
+-
+-    YearBegin
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    YearBegin.freqstr
+-    YearBegin.kwds
+-    YearBegin.name
+-    YearBegin.nanos
+-    YearBegin.normalize
+-    YearBegin.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    YearBegin.apply
+-    YearBegin.apply_index
+-    YearBegin.copy
+-    YearBegin.isAnchored
+-    YearBegin.onOffset
+-
+-FY5253
+-------
+-.. autosummary::
+-   :toctree: api/
+-
+-    FY5253
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    FY5253.freqstr
+-    FY5253.kwds
+-    FY5253.name
+-    FY5253.nanos
+-    FY5253.normalize
+-    FY5253.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    FY5253.apply
+-    FY5253.copy
+-    FY5253.get_rule_code_suffix
+-    FY5253.get_year_end
+-    FY5253.isAnchored
+-    FY5253.onOffset
+-
+-FY5253Quarter
+--------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    FY5253Quarter
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    FY5253Quarter.freqstr
+-    FY5253Quarter.kwds
+-    FY5253Quarter.name
+-    FY5253Quarter.nanos
+-    FY5253Quarter.normalize
+-    FY5253Quarter.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    FY5253Quarter.apply
+-    FY5253Quarter.copy
+-    FY5253Quarter.get_weeks
+-    FY5253Quarter.isAnchored
+-    FY5253Quarter.onOffset
+-    FY5253Quarter.year_has_extra_week
+-
+-Easter
+-------
+-.. autosummary::
+-   :toctree: api/
+-
+-    Easter
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Easter.freqstr
+-    Easter.kwds
+-    Easter.name
+-    Easter.nanos
+-    Easter.normalize
+-    Easter.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Easter.apply
+-    Easter.copy
+-    Easter.isAnchored
+-    Easter.onOffset
+-
+-Tick
+-----
+-.. autosummary::
+-   :toctree: api/
+-
+-    Tick
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Tick.delta
+-    Tick.freqstr
+-    Tick.kwds
+-    Tick.name
+-    Tick.nanos
+-    Tick.normalize
+-    Tick.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Tick.copy
+-    Tick.isAnchored
+-    Tick.onOffset
+-
+-Day
+----
+-.. autosummary::
+-   :toctree: api/
+-
+-    Day
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Day.delta
+-    Day.freqstr
+-    Day.kwds
+-    Day.name
+-    Day.nanos
+-    Day.normalize
+-    Day.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Day.copy
+-    Day.isAnchored
+-    Day.onOffset
+-
+-Hour
+-----
+-.. autosummary::
+-   :toctree: api/
+-
+-    Hour
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Hour.delta
+-    Hour.freqstr
+-    Hour.kwds
+-    Hour.name
+-    Hour.nanos
+-    Hour.normalize
+-    Hour.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Hour.copy
+-    Hour.isAnchored
+-    Hour.onOffset
+-
+-Minute
+-------
+-.. autosummary::
+-   :toctree: api/
+-
+-    Minute
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Minute.delta
+-    Minute.freqstr
+-    Minute.kwds
+-    Minute.name
+-    Minute.nanos
+-    Minute.normalize
+-    Minute.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Minute.copy
+-    Minute.isAnchored
+-    Minute.onOffset
+-
+-Second
+-------
+-.. autosummary::
+-   :toctree: api/
+-
+-    Second
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Second.delta
+-    Second.freqstr
+-    Second.kwds
+-    Second.name
+-    Second.nanos
+-    Second.normalize
+-    Second.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Second.copy
+-    Second.isAnchored
+-    Second.onOffset
+-
+-Milli
+------
+-.. autosummary::
+-   :toctree: api/
+-
+-    Milli
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Milli.delta
+-    Milli.freqstr
+-    Milli.kwds
+-    Milli.name
+-    Milli.nanos
+-    Milli.normalize
+-    Milli.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Milli.copy
+-    Milli.isAnchored
+-    Milli.onOffset
+-
+-Micro
+------
+-.. autosummary::
+-   :toctree: api/
+-
+-    Micro
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Micro.delta
+-    Micro.freqstr
+-    Micro.kwds
+-    Micro.name
+-    Micro.nanos
+-    Micro.normalize
+-    Micro.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Micro.copy
+-    Micro.isAnchored
+-    Micro.onOffset
+-
+-Nano
+-----
+-.. autosummary::
+-   :toctree: api/
+-
+-    Nano
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Nano.delta
+-    Nano.freqstr
+-    Nano.kwds
+-    Nano.name
+-    Nano.nanos
+-    Nano.normalize
+-    Nano.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    Nano.copy
+-    Nano.isAnchored
+-    Nano.onOffset
+-
+-BDay
+-----
+-.. autosummary::
+-   :toctree: api/
+-
+-    BDay
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BDay.base
+-    BDay.freqstr
+-    BDay.kwds
+-    BDay.name
+-    BDay.nanos
+-    BDay.normalize
+-    BDay.offset
+-    BDay.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BDay.apply
+-    BDay.apply_index
+-    BDay.copy
+-    BDay.isAnchored
+-    BDay.onOffset
+-    BDay.rollback
+-    BDay.rollforward
+-
+-BMonthEnd
+----------
+-.. autosummary::
+-   :toctree: api/
+-
+-    BMonthEnd
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BMonthEnd.base
+-    BMonthEnd.freqstr
+-    BMonthEnd.kwds
+-    BMonthEnd.name
+-    BMonthEnd.nanos
+-    BMonthEnd.normalize
+-    BMonthEnd.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BMonthEnd.apply
+-    BMonthEnd.apply_index
+-    BMonthEnd.copy
+-    BMonthEnd.isAnchored
+-    BMonthEnd.onOffset
+-    BMonthEnd.rollback
+-    BMonthEnd.rollforward
+-
+-BMonthBegin
+------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    BMonthBegin
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BMonthBegin.base
+-    BMonthBegin.freqstr
+-    BMonthBegin.kwds
+-    BMonthBegin.name
+-    BMonthBegin.nanos
+-    BMonthBegin.normalize
+-    BMonthBegin.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    BMonthBegin.apply
+-    BMonthBegin.apply_index
+-    BMonthBegin.copy
+-    BMonthBegin.isAnchored
+-    BMonthBegin.onOffset
+-    BMonthBegin.rollback
+-    BMonthBegin.rollforward
+-
+-CBMonthEnd
+-----------
+-.. autosummary::
+-   :toctree: api/
+-
+-    CBMonthEnd
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CBMonthEnd.base
+-    CBMonthEnd.cbday_roll
+-    CBMonthEnd.freqstr
+-    CBMonthEnd.kwds
+-    CBMonthEnd.m_offset
+-    CBMonthEnd.month_roll
+-    CBMonthEnd.name
+-    CBMonthEnd.nanos
+-    CBMonthEnd.normalize
+-    CBMonthEnd.offset
+-    CBMonthEnd.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CBMonthEnd.apply
+-    CBMonthEnd.apply_index
+-    CBMonthEnd.copy
+-    CBMonthEnd.isAnchored
+-    CBMonthEnd.onOffset
+-    CBMonthEnd.rollback
+-    CBMonthEnd.rollforward
+-
+-CBMonthBegin
+-------------
+-.. autosummary::
+-   :toctree: api/
+-
+-    CBMonthBegin
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CBMonthBegin.base
+-    CBMonthBegin.cbday_roll
+-    CBMonthBegin.freqstr
+-    CBMonthBegin.kwds
+-    CBMonthBegin.m_offset
+-    CBMonthBegin.month_roll
+-    CBMonthBegin.name
+-    CBMonthBegin.nanos
+-    CBMonthBegin.normalize
+-    CBMonthBegin.offset
+-    CBMonthBegin.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CBMonthBegin.apply
+-    CBMonthBegin.apply_index
+-    CBMonthBegin.copy
+-    CBMonthBegin.isAnchored
+-    CBMonthBegin.onOffset
+-    CBMonthBegin.rollback
+-    CBMonthBegin.rollforward
+-
+-CDay
+-----
+-.. autosummary::
+-   :toctree: api/
+-
+-    CDay
+-
+-Properties
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CDay.base
+-    CDay.freqstr
+-    CDay.kwds
+-    CDay.name
+-    CDay.nanos
+-    CDay.normalize
+-    CDay.offset
+-    CDay.rule_code
+-
+-Methods
+-~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-    CDay.apply
+-    CDay.apply_index
+-    CDay.copy
+-    CDay.isAnchored
+-    CDay.onOffset
+-    CDay.rollback
+-    CDay.rollforward
+-
+-.. _api.frequencies:
+-
+-===========
+-Frequencies
+-===========
+-.. currentmodule:: pandas.tseries.frequencies
+-
+-.. _api.offsets:
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   to_offset
+diff --git a/doc/source/reference/panel.rst b/doc/source/reference/panel.rst
+deleted file mode 100644
+index 94bfe87fe..000000000
+--- a/doc/source/reference/panel.rst
++++ /dev/null
+@@ -1,10 +0,0 @@
+-{{ header }}
+-
+-.. _api.panel:
+-
+-=====
+-Panel
+-=====
+-.. currentmodule:: pandas
+-
+-`Panel` was removed in 0.25.0. For prior documentation, see the `0.24 documentation <https://pandas.pydata.org/pandas-docs/version/0.24/reference/panel.html>`_
+diff --git a/doc/source/reference/plotting.rst b/doc/source/reference/plotting.rst
+deleted file mode 100644
+index 7615e1d20..000000000
+--- a/doc/source/reference/plotting.rst
++++ /dev/null
+@@ -1,22 +0,0 @@
+-{{ header }}
+-
+-.. _api.plotting:
+-
+-========
+-Plotting
+-========
+-.. currentmodule:: pandas.plotting
+-
+-The following functions are contained in the `pandas.plotting` module.
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   andrews_curves
+-   bootstrap_plot
+-   deregister_matplotlib_converters
+-   lag_plot
+-   parallel_coordinates
+-   radviz
+-   register_matplotlib_converters
+-   scatter_matrix
+diff --git a/doc/source/reference/resampling.rst b/doc/source/reference/resampling.rst
+deleted file mode 100644
+index 57263139d..000000000
+--- a/doc/source/reference/resampling.rst
++++ /dev/null
+@@ -1,66 +0,0 @@
+-{{ header }}
+-
+-.. _api.resampling:
+-
+-==========
+-Resampling
+-==========
+-.. currentmodule:: pandas.core.resample
+-
+-Resampler objects are returned by resample calls: :func:`pandas.DataFrame.resample`, :func:`pandas.Series.resample`.
+-
+-Indexing, iteration
+-~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Resampler.__iter__
+-   Resampler.groups
+-   Resampler.indices
+-   Resampler.get_group
+-
+-Function application
+-~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Resampler.apply
+-   Resampler.aggregate
+-   Resampler.transform
+-   Resampler.pipe
+-
+-Upsampling
+-~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Resampler.ffill
+-   Resampler.backfill
+-   Resampler.bfill
+-   Resampler.pad
+-   Resampler.nearest
+-   Resampler.fillna
+-   Resampler.asfreq
+-   Resampler.interpolate
+-
+-Computations / descriptive stats
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-.. autosummary::
+-   :toctree: api/
+-
+-   Resampler.count
+-   Resampler.nunique
+-   Resampler.first
+-   Resampler.last
+-   Resampler.max
+-   Resampler.mean
+-   Resampler.median
+-   Resampler.min
+-   Resampler.ohlc
+-   Resampler.prod
+-   Resampler.size
+-   Resampler.sem
+-   Resampler.std
+-   Resampler.sum
+-   Resampler.var
+-   Resampler.quantile
+diff --git a/doc/source/reference/series.rst b/doc/source/reference/series.rst
+deleted file mode 100644
+index 7ba625c14..000000000
+--- a/doc/source/reference/series.rst
++++ /dev/null
+@@ -1,593 +0,0 @@
+-{{ header }}
+-
+-.. _api.series:
+-
+-======
+-Series
+-======
+-.. currentmodule:: pandas
+-
+-Constructor
+------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series
+-
+-Attributes
+-----------
+-**Axes**
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.index
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.array
+-   Series.values
+-   Series.dtype
+-   Series.ftype
+-   Series.shape
+-   Series.nbytes
+-   Series.ndim
+-   Series.size
+-   Series.strides
+-   Series.itemsize
+-   Series.base
+-   Series.T
+-   Series.memory_usage
+-   Series.hasnans
+-   Series.flags
+-   Series.empty
+-   Series.dtypes
+-   Series.ftypes
+-   Series.data
+-   Series.is_copy
+-   Series.name
+-   Series.put
+-
+-Conversion
+-----------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.astype
+-   Series.infer_objects
+-   Series.copy
+-   Series.bool
+-   Series.to_numpy
+-   Series.to_period
+-   Series.to_timestamp
+-   Series.to_list
+-   Series.get_values
+-   Series.__array__
+-
+-Indexing, iteration
+--------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.get
+-   Series.at
+-   Series.iat
+-   Series.loc
+-   Series.iloc
+-   Series.__iter__
+-   Series.items
+-   Series.iteritems
+-   Series.keys
+-   Series.pop
+-   Series.item
+-   Series.xs
+-
+-For more information on ``.at``, ``.iat``, ``.loc``, and
+-``.iloc``,  see the :ref:`indexing documentation <indexing>`.
+-
+-Binary operator functions
+--------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.add
+-   Series.sub
+-   Series.mul
+-   Series.div
+-   Series.truediv
+-   Series.floordiv
+-   Series.mod
+-   Series.pow
+-   Series.radd
+-   Series.rsub
+-   Series.rmul
+-   Series.rdiv
+-   Series.rtruediv
+-   Series.rfloordiv
+-   Series.rmod
+-   Series.rpow
+-   Series.combine
+-   Series.combine_first
+-   Series.round
+-   Series.lt
+-   Series.gt
+-   Series.le
+-   Series.ge
+-   Series.ne
+-   Series.eq
+-   Series.product
+-   Series.dot
+-
+-Function application, groupby & window
+---------------------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.apply
+-   Series.agg
+-   Series.aggregate
+-   Series.transform
+-   Series.map
+-   Series.groupby
+-   Series.rolling
+-   Series.expanding
+-   Series.ewm
+-   Series.pipe
+-
+-.. _api.series.stats:
+-
+-Computations / descriptive stats
+---------------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.abs
+-   Series.all
+-   Series.any
+-   Series.autocorr
+-   Series.between
+-   Series.clip
+-   Series.clip_lower
+-   Series.clip_upper
+-   Series.corr
+-   Series.count
+-   Series.cov
+-   Series.cummax
+-   Series.cummin
+-   Series.cumprod
+-   Series.cumsum
+-   Series.describe
+-   Series.diff
+-   Series.factorize
+-   Series.kurt
+-   Series.mad
+-   Series.max
+-   Series.mean
+-   Series.median
+-   Series.min
+-   Series.mode
+-   Series.nlargest
+-   Series.nsmallest
+-   Series.pct_change
+-   Series.prod
+-   Series.quantile
+-   Series.rank
+-   Series.sem
+-   Series.skew
+-   Series.std
+-   Series.sum
+-   Series.var
+-   Series.kurtosis
+-   Series.unique
+-   Series.nunique
+-   Series.is_unique
+-   Series.is_monotonic
+-   Series.is_monotonic_increasing
+-   Series.is_monotonic_decreasing
+-   Series.value_counts
+-   Series.compound
+-
+-Reindexing / selection / label manipulation
+--------------------------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.align
+-   Series.drop
+-   Series.droplevel
+-   Series.drop_duplicates
+-   Series.duplicated
+-   Series.equals
+-   Series.first
+-   Series.head
+-   Series.idxmax
+-   Series.idxmin
+-   Series.isin
+-   Series.last
+-   Series.reindex
+-   Series.reindex_like
+-   Series.rename
+-   Series.rename_axis
+-   Series.reset_index
+-   Series.sample
+-   Series.set_axis
+-   Series.take
+-   Series.tail
+-   Series.truncate
+-   Series.where
+-   Series.mask
+-   Series.add_prefix
+-   Series.add_suffix
+-   Series.filter
+-
+-Missing data handling
+----------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.isna
+-   Series.notna
+-   Series.dropna
+-   Series.fillna
+-   Series.interpolate
+-
+-Reshaping, sorting
+-------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.argsort
+-   Series.argmin
+-   Series.argmax
+-   Series.reorder_levels
+-   Series.sort_values
+-   Series.sort_index
+-   Series.swaplevel
+-   Series.unstack
+-   Series.explode
+-   Series.searchsorted
+-   Series.ravel
+-   Series.repeat
+-   Series.squeeze
+-   Series.view
+-
+-Combining / joining / merging
+------------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.append
+-   Series.replace
+-   Series.update
+-
+-Time series-related
+--------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.asfreq
+-   Series.asof
+-   Series.shift
+-   Series.first_valid_index
+-   Series.last_valid_index
+-   Series.resample
+-   Series.tz_convert
+-   Series.tz_localize
+-   Series.at_time
+-   Series.between_time
+-   Series.tshift
+-   Series.slice_shift
+-
+-Accessors
+----------
+-
+-Pandas provides dtype-specific methods under various accessors.
+-These are separate namespaces within :class:`Series` that only apply
+-to specific data types.
+-
+-=========================== =================================
+-Data Type                   Accessor
+-=========================== =================================
+-Datetime, Timedelta, Period :ref:`dt <api.series.dt>`
+-String                      :ref:`str <api.series.str>`
+-Categorical                 :ref:`cat <api.series.cat>`
+-Sparse                      :ref:`sparse <api.series.sparse>`
+-=========================== =================================
+-
+-.. _api.series.dt:
+-
+-Datetimelike properties
+-~~~~~~~~~~~~~~~~~~~~~~~
+-
+-``Series.dt`` can be used to access the values of the series as
+-datetimelike and return several properties.
+-These can be accessed like ``Series.dt.<property>``.
+-
+-Datetime properties
+-^^^^^^^^^^^^^^^^^^^
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_attribute.rst
+-
+-   Series.dt.date
+-   Series.dt.time
+-   Series.dt.timetz
+-   Series.dt.year
+-   Series.dt.month
+-   Series.dt.day
+-   Series.dt.hour
+-   Series.dt.minute
+-   Series.dt.second
+-   Series.dt.microsecond
+-   Series.dt.nanosecond
+-   Series.dt.week
+-   Series.dt.weekofyear
+-   Series.dt.dayofweek
+-   Series.dt.weekday
+-   Series.dt.dayofyear
+-   Series.dt.quarter
+-   Series.dt.is_month_start
+-   Series.dt.is_month_end
+-   Series.dt.is_quarter_start
+-   Series.dt.is_quarter_end
+-   Series.dt.is_year_start
+-   Series.dt.is_year_end
+-   Series.dt.is_leap_year
+-   Series.dt.daysinmonth
+-   Series.dt.days_in_month
+-   Series.dt.tz
+-   Series.dt.freq
+-
+-Datetime methods
+-^^^^^^^^^^^^^^^^
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_method.rst
+-
+-   Series.dt.to_period
+-   Series.dt.to_pydatetime
+-   Series.dt.tz_localize
+-   Series.dt.tz_convert
+-   Series.dt.normalize
+-   Series.dt.strftime
+-   Series.dt.round
+-   Series.dt.floor
+-   Series.dt.ceil
+-   Series.dt.month_name
+-   Series.dt.day_name
+-
+-Period properties
+-^^^^^^^^^^^^^^^^^
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_attribute.rst
+-
+-   Series.dt.qyear
+-   Series.dt.start_time
+-   Series.dt.end_time
+-
+-Timedelta properties
+-^^^^^^^^^^^^^^^^^^^^
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_attribute.rst
+-
+-   Series.dt.days
+-   Series.dt.seconds
+-   Series.dt.microseconds
+-   Series.dt.nanoseconds
+-   Series.dt.components
+-
+-Timedelta methods
+-^^^^^^^^^^^^^^^^^
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_method.rst
+-
+-   Series.dt.to_pytimedelta
+-   Series.dt.total_seconds
+-
+-
+-.. _api.series.str:
+-
+-String handling
+-~~~~~~~~~~~~~~~
+-
+-``Series.str`` can be used to access the values of the series as
+-strings and apply several methods to it. These can be accessed like
+-``Series.str.<function/property>``.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_method.rst
+-
+-   Series.str.capitalize
+-   Series.str.casefold
+-   Series.str.cat
+-   Series.str.center
+-   Series.str.contains
+-   Series.str.count
+-   Series.str.decode
+-   Series.str.encode
+-   Series.str.endswith
+-   Series.str.extract
+-   Series.str.extractall
+-   Series.str.find
+-   Series.str.findall
+-   Series.str.get
+-   Series.str.index
+-   Series.str.join
+-   Series.str.len
+-   Series.str.ljust
+-   Series.str.lower
+-   Series.str.lstrip
+-   Series.str.match
+-   Series.str.normalize
+-   Series.str.pad
+-   Series.str.partition
+-   Series.str.repeat
+-   Series.str.replace
+-   Series.str.rfind
+-   Series.str.rindex
+-   Series.str.rjust
+-   Series.str.rpartition
+-   Series.str.rstrip
+-   Series.str.slice
+-   Series.str.slice_replace
+-   Series.str.split
+-   Series.str.rsplit
+-   Series.str.startswith
+-   Series.str.strip
+-   Series.str.swapcase
+-   Series.str.title
+-   Series.str.translate
+-   Series.str.upper
+-   Series.str.wrap
+-   Series.str.zfill
+-   Series.str.isalnum
+-   Series.str.isalpha
+-   Series.str.isdigit
+-   Series.str.isspace
+-   Series.str.islower
+-   Series.str.isupper
+-   Series.str.istitle
+-   Series.str.isnumeric
+-   Series.str.isdecimal
+-   Series.str.get_dummies
+-
+-..
+-    The following is needed to ensure the generated pages are created with the
+-    correct template (otherwise they would be created in the Series/Index class page)
+-
+-..
+-    .. autosummary::
+-       :toctree: api/
+-       :template: autosummary/accessor.rst
+-
+-       Series.str
+-       Series.cat
+-       Series.dt
+-       Series.sparse
+-       DataFrame.sparse
+-       Index.str
+-
+-.. _api.series.cat:
+-
+-Categorical accessor
+-~~~~~~~~~~~~~~~~~~~~
+-
+-Categorical-dtype specific methods and attributes are available under
+-the ``Series.cat`` accessor.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_attribute.rst
+-
+-   Series.cat.categories
+-   Series.cat.ordered
+-   Series.cat.codes
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_method.rst
+-
+-   Series.cat.rename_categories
+-   Series.cat.reorder_categories
+-   Series.cat.add_categories
+-   Series.cat.remove_categories
+-   Series.cat.remove_unused_categories
+-   Series.cat.set_categories
+-   Series.cat.as_ordered
+-   Series.cat.as_unordered
+-
+-
+-.. _api.series.sparse:
+-
+-Sparse accessor
+-~~~~~~~~~~~~~~~
+-
+-Sparse-dtype specific methods and attributes are provided under the
+-``Series.sparse`` accessor.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_attribute.rst
+-
+-   Series.sparse.npoints
+-   Series.sparse.density
+-   Series.sparse.fill_value
+-   Series.sparse.sp_values
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.sparse.from_coo
+-   Series.sparse.to_coo
+-
+-
+-Plotting
+---------
+-``Series.plot`` is both a callable method and a namespace attribute for
+-specific plotting methods of the form ``Series.plot.<kind>``.
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_callable.rst
+-
+-   Series.plot
+-
+-.. autosummary::
+-   :toctree: api/
+-   :template: autosummary/accessor_method.rst
+-
+-   Series.plot.area
+-   Series.plot.bar
+-   Series.plot.barh
+-   Series.plot.box
+-   Series.plot.density
+-   Series.plot.hist
+-   Series.plot.kde
+-   Series.plot.line
+-   Series.plot.pie
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.hist
+-
+-Serialization / IO / conversion
+--------------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Series.to_pickle
+-   Series.to_csv
+-   Series.to_dict
+-   Series.to_excel
+-   Series.to_frame
+-   Series.to_xarray
+-   Series.to_hdf
+-   Series.to_sql
+-   Series.to_msgpack
+-   Series.to_json
+-   Series.to_sparse
+-   Series.to_dense
+-   Series.to_string
+-   Series.to_clipboard
+-   Series.to_latex
+-
+-
+-Sparse
+-------
+-
+-.. autosummary::
+-   :toctree: api/
+-
+-   SparseSeries.to_coo
+-   SparseSeries.from_coo
+diff --git a/doc/source/reference/style.rst b/doc/source/reference/style.rst
+deleted file mode 100644
+index 3d155535e..000000000
+--- a/doc/source/reference/style.rst
++++ /dev/null
+@@ -1,66 +0,0 @@
+-{{ header }}
+-
+-.. _api.style:
+-
+-=====
+-Style
+-=====
+-.. currentmodule:: pandas.io.formats.style
+-
+-``Styler`` objects are returned by :attr:`pandas.DataFrame.style`.
+-
+-Styler constructor
+-------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Styler
+-   Styler.from_custom_template
+-
+-Styler properties
+------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Styler.env
+-   Styler.template
+-   Styler.loader
+-
+-Style application
+------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Styler.apply
+-   Styler.applymap
+-   Styler.where
+-   Styler.format
+-   Styler.set_precision
+-   Styler.set_table_styles
+-   Styler.set_table_attributes
+-   Styler.set_caption
+-   Styler.set_properties
+-   Styler.set_uuid
+-   Styler.clear
+-   Styler.pipe
+-
+-Builtin styles
+---------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Styler.highlight_max
+-   Styler.highlight_min
+-   Styler.highlight_null
+-   Styler.background_gradient
+-   Styler.bar
+-
+-Style export and import
+------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Styler.render
+-   Styler.export
+-   Styler.use
+-   Styler.to_excel
+diff --git a/doc/source/reference/window.rst b/doc/source/reference/window.rst
+deleted file mode 100644
+index 9e1374a3b..000000000
+--- a/doc/source/reference/window.rst
++++ /dev/null
+@@ -1,69 +0,0 @@
+-{{ header }}
+-
+-.. _api.window:
+-
+-======
+-Window
+-======
+-.. currentmodule:: pandas.core.window
+-
+-Rolling objects are returned by ``.rolling`` calls: :func:`pandas.DataFrame.rolling`, :func:`pandas.Series.rolling`, etc.
+-Expanding objects are returned by ``.expanding`` calls: :func:`pandas.DataFrame.expanding`, :func:`pandas.Series.expanding`, etc.
+-EWM objects are returned by ``.ewm`` calls: :func:`pandas.DataFrame.ewm`, :func:`pandas.Series.ewm`, etc.
+-
+-Standard moving window functions
+---------------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Rolling.count
+-   Rolling.sum
+-   Rolling.mean
+-   Rolling.median
+-   Rolling.var
+-   Rolling.std
+-   Rolling.min
+-   Rolling.max
+-   Rolling.corr
+-   Rolling.cov
+-   Rolling.skew
+-   Rolling.kurt
+-   Rolling.apply
+-   Rolling.aggregate
+-   Rolling.quantile
+-   Window.mean
+-   Window.sum
+-
+-.. _api.functions_expanding:
+-
+-Standard expanding window functions
+------------------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   Expanding.count
+-   Expanding.sum
+-   Expanding.mean
+-   Expanding.median
+-   Expanding.var
+-   Expanding.std
+-   Expanding.min
+-   Expanding.max
+-   Expanding.corr
+-   Expanding.cov
+-   Expanding.skew
+-   Expanding.kurt
+-   Expanding.apply
+-   Expanding.aggregate
+-   Expanding.quantile
+-
+-Exponentially-weighted moving window functions
+-----------------------------------------------
+-.. autosummary::
+-   :toctree: api/
+-
+-   EWM.mean
+-   EWM.std
+-   EWM.var
+-   EWM.corr
+-   EWM.cov
+-- 
+2.21.0
+

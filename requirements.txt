@@ -1,5 +1,5 @@
-numpy==1.16.*
-matplotlib==3.*
-wbdata==0.2.*
-pandas==0.22.*
-csv==1.*
+numpy
+matplotlib
+wbdata
+pandas
+csv
